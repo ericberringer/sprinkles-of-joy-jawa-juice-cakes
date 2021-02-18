@@ -28,12 +28,15 @@ const render = () => {
 }
 
 eventHub.addEventListener("categorySelected", event => {
-  const catId = parseInt(event.detail.selectedCategory)
-  bakeryProducts = useProducts()
-  bakeryCategories = useCategories()
-
-  const matchingCategories = bakeryCategories.find(category => category.id === catId)
-  const matchingProducts = bakeryProducts.filter(product => product.categoryId === catId)
-
+  const catId = event.detail.selectedCategory
+  if(catId !== "0") {
+    bakeryProducts = useProducts().filter(product => product.categoryId === +catId)
+    // + means parseInt, but don't do it, Scort's orders.
+    render()
+  } else {
+    bakeryProducts = useProducts()
+    render()
+  }
+  
 })
  
