@@ -26,3 +26,14 @@ const render = () => {
     return Product(product, productCategory)
   }).join("")
 }
+
+eventHub.addEventListener("categorySelected", event => {
+  const catId = parseInt(event.detail.selectedCategory)
+  bakeryProducts = useProducts()
+  bakeryCategories = useCategories()
+
+  const matchingCategories = bakeryCategories.find(category => category.id === catId)
+  const matchingProducts = bakeryProducts.filter(product => product.categoryId === catId)
+
+})
+ 
