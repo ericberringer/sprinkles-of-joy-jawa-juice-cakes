@@ -9,6 +9,7 @@ let bakeryProducts = []
 let bakeryCategories = []
 
 export const ProductList = () => {
+  // debugger
   getProducts()
     .then(getCategories)
     .then(() => {
@@ -20,7 +21,7 @@ export const ProductList = () => {
 
 const render = () => {
   contentTarget.innerHTML = bakeryProducts.map(product => {
-    const productCategory = bakeryCategories.find(category => cat.id === product.categoryId)
+    const productCategory = bakeryCategories.find(category => category.id === product.categoryId)
 
     return Product(product, productCategory)
   }).join("")
