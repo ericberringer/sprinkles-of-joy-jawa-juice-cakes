@@ -83,7 +83,7 @@ eventHub.addEventListener("click", event => {
         const date = document.querySelector("#review-date").value
         const rating = parseInt(document.querySelector("#reviewSelect").value)
         const productId = parseInt(document.querySelector("#productDropdown").value)
-        const customerId = sessionStorage.getItem("soj-customer-id")
+        const customerId = parseInt(sessionStorage.getItem("soj-customer-id"))
 
         const newReviewObject = {
             "text": reviewText,
@@ -94,8 +94,8 @@ eventHub.addEventListener("click", event => {
         }
 
         saveReviews(newReviewObject)
-        .then(dispatchStateChangeEvent)
+        // .then(dispatchStateChangeEvent)
     }
 })
 
-
+// ! Code as written is broken. See error on console
