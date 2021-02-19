@@ -3,13 +3,19 @@ const eventHub = document.querySelector("#container")
 export const Product = (product, category) => {
     return `
       <section class="baked_good">
-          <header class="baked_good__header">
-              <h4>${product.name}</h4>
+            <header class="baked_good__header">
+            <div class="prodNameCat">  
+            <h4>${product.name}</h4>
+            <h6>${category.name}</h6>
+            </div>s
               <p>$${product.price}</p>
-          </header>
+            </header>
           <div>
-              <button id="addProduct">Add to Cart</button>
-              <p>${product.description} [${category.name}]</p>
+              <button id="addProduct--${product.id}">Add to Cart</button>
+              <p>${product.description}</p>
+          </div>
+          <div>
+              <button id="addReview--${product.id}">Write a Review</button>
           </div>
           <div class="reviewDiv">
             <div class="reviewButtonContainer"></div>
