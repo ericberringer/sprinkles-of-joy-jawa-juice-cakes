@@ -17,17 +17,15 @@ export const Product = (product, category) => {
               <button id="addProduct--${product.id}">Add to Cart</button>
               <p>${product.description}</p>
           </div>
-          <div>
-              <button id="addReview--${product.id}">Write a Review</button>
-          </div>
           <div class="reviewDiv">
-            <div class="reviewButtonContainer"></div>
-            <article class="reviewForm"></article>
-            <div class="reviewContainer"></div>
+          <div class="reviewContainer"></div>
           </div>
-      </section>
-  `
+          </section>
+          `
 }
+        //   <div>
+        //       <button id="addReview--${product.id}">Write a Review</button>
+        //   </div>
 
 // Adding to cart
 eventHub.addEventListener("click", evt => {
