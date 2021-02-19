@@ -11,6 +11,11 @@ export const Product = (product, category) => {
               <button id="addProduct">Add to Cart</button>
               <p>${product.description} [${category.name}]</p>
           </div>
+          <div class="reviewDiv">
+            <div class="reviewButtonContainer"></div>
+            <article class="reviewForm"></article>
+            <div class="reviewContainer"></div>
+          </div>
       </section>
   `
 }
