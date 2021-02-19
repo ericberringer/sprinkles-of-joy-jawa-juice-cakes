@@ -1,4 +1,5 @@
 import { getCustomers, useCustomers } from "../customers/CustomerProvider.js"
+import { renderReviewForm } from '../reviews/ReviewForm.js'
 
 const eventHub = document.querySelector("#container")
 
@@ -16,18 +17,17 @@ export const Product = (product, category) => {
               <button id="addProduct--${product.id}">Add to Cart</button>
               <p>${product.description}</p>
           </div>
-          <div>
-              <button id="addReview--${product.id}">Write a Review</button>
-          </div>
           <div class="reviewDiv">
-            <div class="reviewButtonContainer"></div>
-            <article class="reviewForm"></article>
-            <div class="reviewContainer"></div>
+          <div class="reviewContainer"></div>
           </div>
-      </section>
-  `
+          </section>
+          `
 }
+        //   <div>
+        //       <button id="addReview--${product.id}">Write a Review</button>
+        //   </div>
 
+// Adding to cart
 eventHub.addEventListener("click", evt => {
     if (evt.target.id.startsWith("addProduct--")) {
         const [prefix, productId] = evt.target.id.split("--")
@@ -41,26 +41,41 @@ eventHub.addEventListener("click", evt => {
 })
 
 
+// WRITING a review
+eventHub.addEventListener("click", clickEvent => {
+    if (clickEvent.target.id.startsWith("addReview--")) {
+        renderReviewForm()
+    }
+})
+
+
+
+
+
+
+
+
+// Listener for SAVING review
 // eventHub.addEventListener("click", clickEvent => {
 
-    
+
 //     if (clickEvent.target.id.startsWith === "addReview") {
 //         clickEvent.preventDefault()
 //         const [prefix, productId] = clickEvent.target.id.split("--")
-        
+
 //         const reviewText = document.querySelector("#review-text").value
 //         const reviewDate = document.querySelector("#review-date").value
 //         const customer = document.querySelector("#review-author").value // gives us name, we need ID
 //         const product = parseInt(productId)
-        
+
 //         getCustomers()
 //         .then(customersArray = useCustomers())
 //         .then(() => {
-            
-            
-            
-                    
-                    
+
+
+
+
+
 //                     const matchingCustomer = customersArray.find(customer => customersArray.name === customer)
 // // ! Need to have authentication done before we do this so we can call getCustomer(id) and find the specific customer to put into this customerId field. 
 // // ! Maybe need to make a conditional to check if the user is already a customer. Let's move forward assuming they are and refactor a conditional later.
@@ -74,7 +89,7 @@ eventHub.addEventListener("click", evt => {
 //             "customerId": matchingCustomer.id,
 //             "productId": product,
 //             "date": reviewDate,
-            
+
 
 //         }
 
