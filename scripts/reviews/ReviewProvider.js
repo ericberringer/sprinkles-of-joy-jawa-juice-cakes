@@ -1,3 +1,6 @@
+import { bakeryAPI } from '../Settings.js'
+
+
 let reviews = []
 
 
@@ -31,7 +34,7 @@ export const saveReviews = review => {
 }
 
 
-const dispatchStateChangeEvent = () => {
+export const dispatchStateChangeEvent = () => {
     const reviewStateChanged = new CustomEvent("reviewStateChanged")
 
     eventHub.dispatchEvent(reviewStateChanged)
