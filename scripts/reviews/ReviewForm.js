@@ -1,5 +1,8 @@
 import { getCustomer } from "../customers/CustomerProvider.js"
 import { getProducts, useProducts } from "../products/ProductProvider.js"
+import { authHelper } from '../auth/authHelper.js'
+import { saveReviews, dispatchStateChangeEvent } from '../reviews/ReviewProvider.js'
+
 
 
 const contentTarget = document.querySelector(".reviewForm")
@@ -28,11 +31,11 @@ export const renderReviewForm = (products, customer) => {
         <fieldset>
                 <label for="reviewSelect">Rating:</label>
                 <select class="reviewSelect" id="reviewSelect">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="1">🤰🏾</option>
+                    <option value="2">🤰🏾🤰🏾</option>
+                    <option value="3">🤰🏾🤰🏾🤰🏾</option>
+                    <option value="4">🤰🏾🤰🏾🤰🏾🤰🏾</option>
+                    <option value="5">🤰🏾🤰🏾🤰🏾🤰🏾🤰🏾</option>
                     
                 </select>
         </fieldset>
@@ -69,3 +72,30 @@ const ProductSelect = () => {
 eventHub.addEventListener("showNewReviewForm", event => {
     ProductSelect()
 })
+
+//TODO: add listener for saving reviews that gets the userId from sessionStorage gets info from input fields
+
+eventHub.addEventListener("click", event => {
+    if (event.target.id === "saveReview"){
+        // Need custId, review text, Product Id, date, and rating
+
+        const reviewText = document.querySelector("#review-text").value
+        const date = document.querySelector("#review-date").value
+        const rating = parseInt(document.querySelector("#reviewSelect").value)
+        const productId = parseInt(document.querySelector("#productDropdown").value)
+        const customerId = sessionStorage.getItem("soj-customer-id")
+
+        const newReviewObject = {
+            "text": reviewText,
+            "rating": rating,
+            "customerId": customerId,
+            "productId": productId,
+            "date": date
+        }
+
+        saveReviews(newReviewObject)
+        .then(dispatchStateChangeEvent)
+    }
+})
+
+
