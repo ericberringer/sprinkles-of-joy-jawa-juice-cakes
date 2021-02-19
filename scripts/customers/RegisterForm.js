@@ -42,6 +42,7 @@ const render = () => {
   }
 }
 
+// calls RegisterForm 
 eventHub.addEventListener("showRegisterForm", RegisterForm)
 
 eventHub.addEventListener("click", evt => {

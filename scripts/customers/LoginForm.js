@@ -3,6 +3,7 @@ import { customerLogin } from "./CustomerProvider.js"
 
 const eventHub = document.querySelector("#container")
 const contentTarget = document.querySelector(".form__login")
+const userNav = document.querySelector(".userNav")
 
 let categories = []
 
@@ -30,14 +31,16 @@ const render = () => {
   }
 }
 
+// Logs in user
 eventHub.addEventListener("click", e => {
   if (e.target.id === "customerLogin") {
     e.preventDefault()
-    const loginEmail = document.querySelector(".login-email")
-    const loginPassword = document.querySelector(".login-password")
-
+    const loginEmail = document.querySelector("#login-email").value
+    const loginPassword = document.querySelector("#login-password").value
+//  changed the variables above to grab the .value and the selector to # instead of .
     customerLogin(loginEmail, loginPassword)
       .then(user => {
+        
         if (user) {
           contentTarget.innerHTML = ""
 
@@ -58,3 +61,12 @@ eventHub.addEventListener("click", e => {
 })
 
 eventHub.addEventListener("showLoginForm", LoginForm)
+
+
+//Logs out user
+// ! Working now but may need to modify as we add order history, order cart, reviews, etc
+eventHub.addEventListener("userLogOut", event => {
+  userNav.innerHTML = ""
+  sessionStorage.clear()
+  LoginForm()
+})
