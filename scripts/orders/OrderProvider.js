@@ -5,7 +5,7 @@ const eventHub = document.querySelector("#container")
 
 let customerOrders = []
 
-export const useOrders = () => orders.slice()
+export const useOrders = () => customerOrders.slice()
 
 export const getOrders = () => {
   return fetch(`${bakeryAPI.baseURL}/orders?_expand=status`)
@@ -15,6 +15,7 @@ export const getOrders = () => {
     })
 }
 
+// ! This is updating the orderProducts database with 3 new entries with the products as separate entries with no orderId
 export const saveOrder = (order, productsInOrder) => {
   return fetch(`${bakeryAPI.baseURL}/orders`, {
     method: "POST",
@@ -24,10 +25,11 @@ export const saveOrder = (order, productsInOrder) => {
     body: JSON.stringify(order)
   })
     .then(res => res.json())
-    .then(() => {
+    .then(createdOrder => {
       const orderProducts = productsInOrder.map(product => {
+        
         return {
-          "orderId": order.id,
+          "orderId": createdOrder.id,
           "productId": product.id
         }
       })
