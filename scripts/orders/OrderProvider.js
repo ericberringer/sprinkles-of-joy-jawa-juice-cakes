@@ -3,9 +3,9 @@ import { saveOrderProducts } from "./OrderProductProvider.js"
 
 const eventHub = document.querySelector("#container")
 
-let orders = []
+let customerOrders = []
 
-export const useOrders = () => orders.slice()
+export const useOrders = () => customerOrders.slice()
 
 export const getOrders = () => {
   return fetch(`${bakeryAPI.baseURL}/orders?_expand=status`)
@@ -14,6 +14,7 @@ export const getOrders = () => {
       customerOrders = response
     })
 }
+
 
 export const saveOrder = (order, productsInOrder) => {
   return fetch(`${bakeryAPI.baseURL}/orders`, {
@@ -24,8 +25,9 @@ export const saveOrder = (order, productsInOrder) => {
     body: JSON.stringify(order)
   })
     .then(res => res.json())
-    .then(() => {
+    .then(createdOrder => {
       const orderProducts = productsInOrder.map(product => {
+        
         return {
           "orderId": createdOrder.id,
           "productId": product.id
