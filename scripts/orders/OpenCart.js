@@ -39,19 +39,23 @@ const render = () => {
   `
 }
 
+// Reacting show customer cart button click (or a listener on that button to be programmed first)
 eventHub.addEventListener("showCustomerCart", e => OpenCart())
 
+//Reacting to the add to cart click from product.js
 eventHub.addEventListener("addToCart", event => {
-  const productId = event.detail.productId
+  const productId = event.detail.addedProduct
   getProducts()
     .then(() => {
       const allProducts = useProducts()
+      
       const productToBeAdded = allProducts.find(prod => prod.id === productId)
       productsInCart.push(productToBeAdded)
       OpenCart()
     })
 })
 
+//Place order click event
 eventHub.addEventListener("click", clickEvent => {
   if (clickEvent.target.id === "placeOrder" && productsInCart.length !== 0) {
     const currentCustomerId = parseInt(authHelper.getCurrentUserId())
