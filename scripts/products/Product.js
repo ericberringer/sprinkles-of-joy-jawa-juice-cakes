@@ -1,5 +1,6 @@
 import { getCustomers, useCustomers } from "../customers/CustomerProvider.js"
 import { renderReviewForm } from '../reviews/ReviewForm.js'
+import { ReviewAverage } from '../reviews/ReviewAverage.js'
 
 const eventHub = document.querySelector("#container")
 
@@ -18,11 +19,14 @@ export const Product = (product, category) => {
               <p>${product.description}</p>
           </div>
           <div class="reviewDiv">
-          <div class="reviewContainer"></div>
+          <div class="reviewContainer">${ReviewAverage(product)}</div>
           </div>
           </section>
           `
 }
+
+
+
         //   <div>
         //       <button id="addReview--${product.id}">Write a Review</button>
         //   </div>

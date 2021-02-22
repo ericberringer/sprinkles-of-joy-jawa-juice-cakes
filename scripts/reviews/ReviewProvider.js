@@ -4,14 +4,14 @@ import { bakeryAPI } from '../Settings.js'
 let reviews = []
 
 
-const eventHub = document.querySelector(".container")
+const eventHub = document.querySelector("#container")
 
 
 export const getReviews = () => {
     return fetch(`${bakeryAPI.baseURL}/reviews`)
     .then(response => response.json())
     .then(parsedReviews => {
-        console.log(parsedReviews)
+        // console.log(parsedReviews)
         reviews = parsedReviews
     })
 }
