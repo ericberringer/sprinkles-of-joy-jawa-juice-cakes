@@ -15,7 +15,7 @@ export const getOrders = () => {
     })
 }
 
-// ! This is updating the orderProducts database with 3 new entries with the products as separate entries with no orderId
+
 export const saveOrder = (order, productsInOrder) => {
   return fetch(`${bakeryAPI.baseURL}/orders`, {
     method: "POST",
