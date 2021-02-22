@@ -3,7 +3,7 @@ import { saveOrderProducts } from "./OrderProductProvider.js"
 
 const eventHub = document.querySelector("#container")
 
-let orders = []
+let customerOrders = []
 
 export const useOrders = () => orders.slice()
 
@@ -27,7 +27,7 @@ export const saveOrder = (order, productsInOrder) => {
     .then(() => {
       const orderProducts = productsInOrder.map(product => {
         return {
-          "orderId": createdOrder.id,
+          "orderId": order.id,
           "productId": product.id
         }
       })
