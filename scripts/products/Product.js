@@ -1,10 +1,18 @@
 import { getCustomers, useCustomers } from "../customers/CustomerProvider.js"
 import { renderReviewForm } from '../reviews/ReviewForm.js'
 import { ReviewAverage } from '../reviews/ReviewAverage.js'
+import { Review } from "../reviews/Review.js"
 
 const eventHub = document.querySelector("#container")
 
-export const Product = (product, category) => {
+export const Product = (product, category, reviews, customers) => {
+    const reviewsWithCustomers = reviews.map(review => {
+        const customer = customers.find(customer => customer.id === review.customerId)
+        return {
+            review: review,
+            customer: customer
+        }
+    })
     return `
       <section class="baked_good">
             <header class="baked_good__header">
@@ -18,18 +26,12 @@ export const Product = (product, category) => {
               <button id="addProduct--${product.id}">Add to Cart</button>
               <p>${product.description}</p>
           </div>
-          <div class="reviewDiv">
-          <div class="reviewContainer">${ReviewAverage(product)}</div>
+          <div class="reviewContainer">
+            ${reviewsWithCustomers.map(review => Review(review)).join("")}
           </div>
           </section>
           `
 }
-
-
-
-        //   <div>
-        //       <button id="addReview--${product.id}">Write a Review</button>
-        //   </div>
 
 // Adding to cart
 eventHub.addEventListener("click", evt => {
