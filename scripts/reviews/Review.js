@@ -18,7 +18,7 @@ const reviewStars = [
 export const Review = (reviewWithCustomer) => {
     return `
         <div class="review">
-            <p class="review__rating" id="review__rating--${reviewWithCustomer.review.id}"> Customer Rating: ${reviewWithCustomer.review.rating}</p>
+            <button class="review__rating" id="review__rating--${reviewWithCustomer.review.id}"> Customer Rating: ${reviewWithCustomer.review.rating}</button>
             <strong>
                 <p class="review__name">Customer Name: ${reviewWithCustomer.customer.name}</p>
             </strong>
@@ -26,3 +26,18 @@ export const Review = (reviewWithCustomer) => {
         </div>
             `   
 }
+
+
+eventHub.addEventListener("click", event => {
+    if (event.target.id.startsWith("review__rating--")){
+        const [prefix, suffix] = event.target.id.split("--")
+
+        const customEvent = new CustomEvent ("viewReview", {
+            detail: {
+                reviewId: suffix
+            }
+        })
+
+        eventHub.dispatchEvent(customEvent)
+    }
+})
