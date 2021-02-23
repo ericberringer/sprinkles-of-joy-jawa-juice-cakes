@@ -2,7 +2,11 @@ import { getCustomers, useCustomers } from "../customers/CustomerProvider.js"
 import { renderReviewForm } from '../reviews/ReviewForm.js'
 import { ReviewAverage } from '../reviews/ReviewAverage.js'
 import { Review } from "../reviews/Review.js"
-import { getReviews, useReviews } from "../reviews/ReviewProvider.js"
+import { deleteReview, getReviews, useReviews, dispatchStateChangeEvent } from "../reviews/ReviewProvider.js"
+import { authHelper } from '../auth/authHelper.js'
+import { ProductList } from '../products/ProductList.js'
+
+
 
 const eventHub = document.querySelector("#container")
 const modalTarget = document.querySelector(".modalContainer")
@@ -79,19 +83,46 @@ eventHub.addEventListener("viewReview", event => {
 
 // Modal Constructor
 export const ReviewModal = (review, customer) => {
+    // Check if current user is review author
+    const currentCustomerId = parseInt(authHelper.getCurrentUserId())
     
-    let ReviewHTMLRepresentation = 
-        `
-        <div id="review_modal" class="modal--parent">
-            <div class="modal--content">
-                <h2>${customer.name} says:</h2>
-                <h3 class="review__rating">Rating: ${review.rating}</h3>
-                <p class="review__text">${review.text}</p>
+    let ReviewHTMLRepresentation = ""
+    
+    if(customer.id === currentCustomerId) {
+        ReviewHTMLRepresentation = `
         
-                <button id="modal__close">Close</button>
+        <div id="review_modal" class="modal--parent">
+                <div class="modal--content">
+                    <h2>${customer.name} says:</h2>
+                    <h3 class="review__rating">Rating: ${review.rating}</h3>
+                    <p class="review__text">${review.text}</p>
+            
+                    <button id="modal__close">Close</button>
+                    <button id="delete__review--${review.id}">Delete</button>
+                </div>
             </div>
-        </div>
+        
         `
+
+        
+    } else {
+        
+        ReviewHTMLRepresentation = 
+            `
+            <div id="review_modal" class="modal--parent">
+                <div class="modal--content">
+                    <h2>${customer.name} says:</h2>
+                    <h3 class="review__rating">Rating: ${review.rating}</h3>
+                    <p class="review__text">${review.text}</p>
+            
+                    <button id="modal__close">Close</button>
+                </div>
+            </div>
+            `
+
+    }
+
+
         modalTarget.innerHTML = ReviewHTMLRepresentation
 }
 
@@ -102,20 +133,25 @@ eventHub.addEventListener("click", event => {
     }
 })
 
+// Modal close action
 const closeModal = () => {
     modalTarget.innerHTML = ""
 }
 
 
 
+// Delete Review Listener
+eventHub.addEventListener("click", event => {
+    if(event.target.id.startsWith("delete__review--")){
+        const [prefix, suffix] = event.target.id.split("--")
 
-// eventHub.addEventListener("attractionDetailsClicked", event => {
-//     console.log("event works hopefully", event.detail.attractionId)
+    deleteReview(suffix)
+    .then(useReviews)
+    .then(dispatchStateChangeEvent)
+    .then(ProductList)
+    
+    
+    }
+    closeModal()
 
-//     const selectedAttractionId = event.detail.attractionId
-//     const attractionsArray = useAttractions()
-//     const attractionSelection = attractionsArray.find((attractionObj) => attractionObj.id === selectedAttractionId)
-//     AttractionModal(attractionSelection)
-// })
-
-
+})
