@@ -60,7 +60,9 @@ eventHub.addEventListener("click", clickEvent => {
 
 // Review Modal Listener
 eventHub.addEventListener("viewReview", event => {
-    const reviewId = event.detail.ratingId
+    const reviewId = parseInt(event.detail.reviewId)
+    // console.log('reviewId: ', reviewId);
+    
     getCustomers()
         .then(getReviews)
             .then(() => {
@@ -75,14 +77,14 @@ eventHub.addEventListener("viewReview", event => {
 })
 
 
-// Modal Function
+// Modal Constructor
 export const ReviewModal = (review, customer) => {
     
     let ReviewHTMLRepresentation = 
         `
-        <div id="review_modal" class="modal_parent">
-            <div class="modal__content">
-                <h2>${customer.name}'s Review</h2>
+        <div id="review_modal" class="modal--parent">
+            <div class="modal--content">
+                <h2>${customer.name} says:</h2>
                 <h3 class="review__rating">Rating: ${review.rating}</h3>
                 <p class="review__text">${review.text}</p>
         

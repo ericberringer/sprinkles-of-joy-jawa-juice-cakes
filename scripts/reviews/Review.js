@@ -30,11 +30,11 @@ export const Review = (reviewWithCustomer) => {
 
 eventHub.addEventListener("click", event => {
     if (event.target.id.startsWith("review__rating--")){
-        const reviewID = event.target.id.split[1]
+        const [prefix, suffix] = event.target.id.split("--")
 
         const customEvent = new CustomEvent ("viewReview", {
             detail: {
-            reviewId: reviewID
+                reviewId: suffix
             }
         })
 
