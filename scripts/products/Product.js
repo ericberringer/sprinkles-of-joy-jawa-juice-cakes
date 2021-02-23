@@ -2,8 +2,10 @@ import { getCustomers, useCustomers } from "../customers/CustomerProvider.js"
 import { renderReviewForm } from '../reviews/ReviewForm.js'
 import { ReviewAverage } from '../reviews/ReviewAverage.js'
 import { Review } from "../reviews/Review.js"
+import { getReviews, useReviews } from "../reviews/ReviewProvider.js"
 
 const eventHub = document.querySelector("#container")
+const modalTarget = document.querySelector(".modalContainer")
 
 export const Product = (product, category, reviews, customers) => {
     const reviewsWithCustomers = reviews.map(review => {
@@ -14,23 +16,23 @@ export const Product = (product, category, reviews, customers) => {
         }
     })
     return `
-      <section class="baked_good">
+        <section class="baked_good">
             <header class="baked_good__header">
-            <div class="prodNameCat">  
-            <h4>${product.name}</h4>
-            <h6>${category.name}</h6>
-            </div>
-              <p>$${product.price}</p>
+                <div class="prodNameCat">  
+                    <h4>${product.name}</h4>
+                    <h6>${category.name}</h6>
+                </div>
+                <p>$${product.price}</p>
             </header>
-          <div>
-              <button id="addProduct--${product.id}">Add to Cart</button>
-              <p>${product.description}</p>
-          </div>
-          <div class="reviewContainer">
-            ${reviewsWithCustomers.map(review => Review(review)).join("")}
-          </div>
-          </section>
-          `
+            <div>
+                <button id="addProduct--${product.id}">Add to Cart</button>
+                <p>${product.description}</p>
+            </div>
+            <div class="reviewContainer">
+                ${reviewsWithCustomers.map(review => Review(review)).join("")}
+            </div>
+        </section>
+        `
 }
 
 // Adding to cart
@@ -56,49 +58,62 @@ eventHub.addEventListener("click", clickEvent => {
 
 
 
+// Review Modal Listener
+eventHub.addEventListener("viewReview", event => {
+    const reviewId = event.detail.ratingId
+    getCustomers()
+        .then(getReviews)
+            .then(() => {
+                const customers = useCustomers()
+                const reviews = useReviews()
+
+                const matchingReview = reviews.find(rev => rev.id === reviewId)
+                const matchingCustomer = customers.find(matchingCustomer => matchingCustomer.id === matchingReview.customerId)
+
+                ReviewModal(matchingReview, matchingCustomer)
+            })
+})
+
+
+// Modal Function
+export const ReviewModal = (review, customer) => {
+    
+    let ReviewHTMLRepresentation = 
+        `
+        <div id="review_modal" class="modal_parent">
+            <div class="modal__content">
+                <h2>${customer.name}'s Review</h2>
+                <h3 class="review__rating">Rating: ${review.rating}</h3>
+                <p class="review__text">${review.text}</p>
+        
+                <button id="modal__close">Close</button>
+            </div>
+        </div>
+        `
+        modalTarget.innerHTML = ReviewHTMLRepresentation
+}
+
+// Review Modal Close
+eventHub.addEventListener("click", event => {
+    if (event.target.id === "modal__close") {
+        closeModal()
+    }
+})
+
+const closeModal = () => {
+    modalTarget.innerHTML = ""
+}
 
 
 
 
+// eventHub.addEventListener("attractionDetailsClicked", event => {
+//     console.log("event works hopefully", event.detail.attractionId)
 
-// Listener for SAVING review
-// eventHub.addEventListener("click", clickEvent => {
-
-
-//     if (clickEvent.target.id.startsWith === "addReview") {
-//         clickEvent.preventDefault()
-//         const [prefix, productId] = clickEvent.target.id.split("--")
-
-//         const reviewText = document.querySelector("#review-text").value
-//         const reviewDate = document.querySelector("#review-date").value
-//         const customer = document.querySelector("#review-author").value // gives us name, we need ID
-//         const product = parseInt(productId)
-
-//         getCustomers()
-//         .then(customersArray = useCustomers())
-//         .then(() => {
-
-
-
-
-
-//                     const matchingCustomer = customersArray.find(customer => customersArray.name === customer)
-// // ! Need to have authentication done before we do this so we can call getCustomer(id) and find the specific customer to put into this customerId field. 
-// // ! Maybe need to make a conditional to check if the user is already a customer. Let's move forward assuming they are and refactor a conditional later.
-
-//                 })
-
-
-//         const newReview = {
-//             "text": reviewText,
-//             "rating" ,
-//             "customerId": matchingCustomer.id,
-//             "productId": product,
-//             "date": reviewDate,
-
-
-//         }
-
-//         saveReview(newReview)
-//     }
+//     const selectedAttractionId = event.detail.attractionId
+//     const attractionsArray = useAttractions()
+//     const attractionSelection = attractionsArray.find((attractionObj) => attractionObj.id === selectedAttractionId)
+//     AttractionModal(attractionSelection)
 // })
+
+
